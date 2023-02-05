@@ -42,7 +42,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: foreducationpurpose/api_yamdb:latest
+        tags: foreducationpurpose/yamdb:latest
   
   deploy:
     name: Deploy on web server
