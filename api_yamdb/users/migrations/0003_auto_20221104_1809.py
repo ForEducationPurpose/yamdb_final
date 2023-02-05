@@ -4,25 +4,35 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0002_auto_20221103_1405'),
+        ("users", "0002_auto_20221103_1405"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='cofirmation_code',
+            model_name="user",
+            name="cofirmation_code",
             field=models.BinaryField(default=bytes),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='user',
-            name='role',
-            field=models.CharField(choices=[('admin', 'ADMIN'), ('moderator', 'MODERATOR'), ('user', 'USER')], default='user', max_length=9, verbose_name='Статус'),
+            model_name="user",
+            name="role",
+            field=models.CharField(
+                choices=[
+                    ("admin", "ADMIN"),
+                    ("moderator", "MODERATOR"),
+                    ("user", "USER"),
+                ],
+                default="user",
+                max_length=9,
+                verbose_name="Статус",
+            ),
         ),
         migrations.AddConstraint(
-            model_name='user',
-            constraint=models.UniqueConstraint(fields=('email', 'username'), name='unique_username_email'),
+            model_name="user",
+            constraint=models.UniqueConstraint(
+                fields=("email", "username"), name="unique_username_email"
+            ),
         ),
     ]

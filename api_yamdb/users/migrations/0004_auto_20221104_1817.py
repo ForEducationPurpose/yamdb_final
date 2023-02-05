@@ -4,19 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0003_auto_20221104_1809'),
+        ("users", "0003_auto_20221104_1809"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='user',
-            name='cofirmation_code',
+            model_name="user",
+            name="cofirmation_code",
         ),
         migrations.AddField(
-            model_name='user',
-            name='confirmation_code',
+            model_name="user",
+            name="confirmation_code",
             field=models.CharField(default=12, max_length=120),
             preserve_default=False,
         ),

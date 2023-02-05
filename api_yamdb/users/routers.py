@@ -3,7 +3,7 @@ from typing import List
 from django.urls import URLPattern
 from rest_framework.routers import SimpleRouter
 
-from .views import (UsersViewSet)
+from .views import UsersViewSet
 
 
 def get_users_routes() -> List[URLPattern]:

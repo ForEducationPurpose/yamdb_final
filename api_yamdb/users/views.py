@@ -1,26 +1,27 @@
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
-from rest_framework import viewsets, filters, status
+from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.response import Response
 from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 
 from api_yamdb.settings import EMAIL_HOST
 
-from .serializers import (
-    UserSerializer, SignUpSerializer,
-    AuthSerializer, UserRoleSerializer
-)
 from .permissions import IsAdmin
-
+from .serializers import (AuthSerializer, SignUpSerializer, UserRoleSerializer,
+                          UserSerializer)
 
 User = get_user_model()
 
 
 @api_view(["POST"])
-@permission_classes([AllowAny, ])
+@permission_classes(
+    [
+        AllowAny,
+    ]
+)
 def sign_up_send_code(request):
     serializer = SignUpSerializer(data=request.data)
     # Подсмотрел тут
@@ -29,37 +30,39 @@ def sign_up_send_code(request):
     serializer.is_valid(raise_exception=True)
     field_values = {
         "username": serializer.validated_data["username"],
-        "email": serializer.validated_data["email"]
+        "email": serializer.validated_data["email"],
     }
     try:
         user, created = User.objects.get_or_create(
             is_active=False, **field_values
         )
     except Exception:
-        return Response(
-            request.data,
-            status=status.HTTP_400_BAD_REQUEST
-        )
+        return Response(request.data, status=status.HTTP_400_BAD_REQUEST)
     confirmation_code = user.make_confirmation_code_for_user()
     user.hash_confirmation_code_and_save(confirmation_code)
     send_mail(
         subject="Welcome_to_YAMDB!",
         message=f" This is your code {confirmation_code}",
         recipient_list=[user.email],
-        from_email=EMAIL_HOST, fail_silently=False
+        from_email=EMAIL_HOST,
+        fail_silently=False,
     )
     user.save()
     return Response(request.data, status=status.HTTP_200_OK)
 
 
 @api_view(["POST"])
-@permission_classes([AllowAny, ])
-def authenticate_send_JWT_access(request):
+@permission_classes(
+    [
+        AllowAny,
+    ]
+)
+def authenticate_send_jwt_access(request):
     serializer = AuthSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     field_values = {
         "username": serializer.validated_data["username"],
-        "confirmation_code": serializer.validated_data["confirmation_code"]
+        "confirmation_code": serializer.validated_data["confirmation_code"],
     }
     user = get_object_or_404(User, username=field_values["username"])
     if user.check_confirmation_code(
@@ -80,16 +83,16 @@ class UsersViewSet(viewsets.ModelViewSet):
     # что исключает использование точки в username, что не по ТЗ
     lookup_value_regex = r"[\w.@+-]+"
     serializer_class = UserSerializer
-    permission_classes = (IsAdmin, )
-    search_fields = ("username", )
-    filter_backends = (filters.SearchFilter, )
+    permission_classes = (IsAdmin,)
+    search_fields = ("username",)
+    filter_backends = (filters.SearchFilter,)
     pagination_class = PageNumberPagination
 
     @action(
         methods=["get", "patch"],
         detail=False,
         url_path="me",
-        permission_classes=(IsAuthenticated, )
+        permission_classes=(IsAuthenticated,),
     )
     def view_me(self, request):
         if request.method == "PATCH":
@@ -111,8 +114,8 @@ class UsersViewSet(viewsets.ModelViewSet):
     # Теперь будет вызываться сериализатор на запись для админа, а для юзера
     # role - read_only_field
     def get_serializer_class(self):
-        if (
-            self.request.user.is_authenticated and (
-                self.request.user.is_admin or self.request.user.is_superuser)):
+        if self.request.user.is_authenticated and (
+            self.request.user.is_admin or self.request.user.is_superuser
+        ):
             return UserSerializer
         return UserRoleSerializer

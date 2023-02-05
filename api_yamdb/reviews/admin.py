@@ -1,29 +1,56 @@
 from django.contrib import admin
 
-from .models import Review, Category, Genre, Title, Comment
+from .models import Category, Comment, Genre, Review, Title
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("pk", "name", "slug", )
-    list_display_links = ("pk", "name", )
-    search_fields = ("name", )
-    list_filter = ("name", )
+    list_display = (
+        "pk",
+        "name",
+        "slug",
+    )
+    list_display_links = (
+        "pk",
+        "name",
+    )
+    search_fields = ("name",)
+    list_filter = ("name",)
     empty_value_display = "-пусто-"
 
 
 class GenreAdmin(admin.ModelAdmin):
-    list_display = ("pk", "name", "slug", )
-    list_display_links = ("pk", "name", )
-    search_fields = ("name", )
-    list_filter = ("name", )
+    list_display = (
+        "pk",
+        "name",
+        "slug",
+    )
+    list_display_links = (
+        "pk",
+        "name",
+    )
+    search_fields = ("name",)
+    list_filter = ("name",)
     empty_value_display = "-пусто-"
 
 
 class TitleAdmin(admin.ModelAdmin):
-    list_display = ("pk", "name", "year", "category", "description", )
-    list_display_links = ("pk", "name", )
-    search_fields = ("genre", )
-    list_filter = ("name", "year", "category", )
+    list_display = (
+        "pk",
+        "name",
+        "year",
+        "category",
+        "description",
+    )
+    list_display_links = (
+        "pk",
+        "name",
+    )
+    search_fields = ("genre",)
+    list_filter = (
+        "name",
+        "year",
+        "category",
+    )
     empty_value_display = "-пусто-"
 
 
@@ -36,8 +63,8 @@ class ReviewAdmin(admin.ModelAdmin):
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ("pk", "review", "author", "text", "pub_date")
-    search_fields = ("text", )
-    list_filter = ("pub_date", )
+    search_fields = ("text",)
+    list_filter = ("pub_date",)
     empty_value_display = "-пусто-"
 
 

@@ -1,6 +1,5 @@
-from rest_framework import serializers
 from django.contrib.auth import get_user_model
-
+from rest_framework import serializers
 
 User = get_user_model()
 
@@ -10,13 +9,9 @@ class UserSerializer(serializers.ModelSerializer):
     # django.contrib.auth.validators.UnicodeUsernameValidator
     # Letters, digits and @/./+/-/_
     username = serializers.RegexField(
-        max_length=150, regex=r"^[\w.@+-]+$",
-        required=True
+        max_length=150, regex=r"^[\w.@+-]+$", required=True
     )
-    email = serializers.EmailField(
-        max_length=254,
-        required=True
-    )
+    email = serializers.EmailField(max_length=254, required=True)
     first_name = serializers.CharField(required=False)
     last_name = serializers.CharField(required=False)
 
@@ -33,16 +28,18 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate_email(self, email):
         if User.objects.filter(email=email).exists():
-            raise serializers.ValidationError(
-                "Эта почта уже занята"
-            )
+            raise serializers.ValidationError("Эта почта уже занята")
         return email
 
     class Meta:
         model = User
         fields = (
-            "username", "email", "first_name",
-            "last_name", "bio", "role",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "bio",
+            "role",
         )
 
 
@@ -50,21 +47,21 @@ class UserRoleSerializer(UserSerializer):
     class Meta:
         model = User
         fields = (
-            "username", "email", "first_name",
-            "last_name", "bio", "role",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "bio",
+            "role",
         )
-        read_only_fields = ("role", )
+        read_only_fields = ("role",)
 
 
 class SignUpSerializer(serializers.Serializer):
     username = serializers.RegexField(
-        max_length=150, regex=r"^[\w.@+-]+$",
-        required=True
+        max_length=150, regex=r"^[\w.@+-]+$", required=True
     )
-    email = serializers.EmailField(
-        max_length=254,
-        required=True
-    )
+    email = serializers.EmailField(max_length=254, required=True)
 
     def validate_username(self, username):
         return UserSerializer.validate_username(self, username)

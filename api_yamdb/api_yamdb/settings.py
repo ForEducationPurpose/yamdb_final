@@ -1,5 +1,4 @@
 import os
-
 from datetime import timedelta
 
 from decouple import config
@@ -74,7 +73,7 @@ DATABASES = {
         "USER": config("POSTGRES_USER", default="postgres"),
         "PASSWORD": config("POSTGRES_PASSWORD", default="1234"),
         "HOST": config("DB_HOST", default="db"),
-        "PORT": config("DB_PORT", default=5432, cast=int)
+        "PORT": config("DB_PORT", default=5432, cast=int),
     }
 }
 
@@ -129,7 +128,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication"
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 5
+    "PAGE_SIZE": 5,
 }
 
 # Подключаем эмуляцию почты
@@ -140,7 +139,7 @@ EMAIL_HOST = config("EMAIL_HOST", default="localhost")
 # Настройки JWT
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=5)
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),
 }
 
 # Длина рандомной строки для confirmation_code

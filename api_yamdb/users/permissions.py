@@ -1,16 +1,14 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.permissions import SAFE_METHODS, BasePermission
 
 
 class IsAdmin(BasePermission):
-    """"Класс содержит разрешения только админу и суперюзеру.
+    """ "Класс содержит разрешения только админу и суперюзеру.
     Юзер должен быть с токеном.
     """
+
     def has_permission(self, request, view):
         user = request.user
-        return (
-            user.is_authenticated
-            and (user.is_admin or user.is_superuser)
-        )
+        return user.is_authenticated and (user.is_admin or user.is_superuser)
 
 
 class IsAdminOrReadOnly(BasePermission):
@@ -18,12 +16,11 @@ class IsAdminOrReadOnly(BasePermission):
     Или полный комплект только если юзер с токеном и при этом
     админ или суперюзер.
     """
+
     def has_permission(self, request, view):
         user = request.user
-        return (
-            request.method in SAFE_METHODS
-            or (user.is_authenticated
-                and (user.is_admin or user.is_superuser))
+        return request.method in SAFE_METHODS or (
+            user.is_authenticated and (user.is_admin or user.is_superuser)
         )
 
 
@@ -34,11 +31,9 @@ class IsAdminOrModeratorOrAuthor(BasePermission):
     если методы не GET, HEAD, OPTIONS,
     получают модератор, админ, автор объекта и суперюзер.
     """
+
     def has_permission(self, request, view):
-        return (
-            request.method in SAFE_METHODS
-            or request.user.is_authenticated
-        )
+        return request.method in SAFE_METHODS or request.user.is_authenticated
 
     # Отдельные объекты он может удалять и т.п.
     def has_object_permission(self, request, view, obj):

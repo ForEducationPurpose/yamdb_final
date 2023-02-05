@@ -1,9 +1,9 @@
 from typing import List
 
-from django.urls import path, include, URLPattern
+from django.urls import URLPattern, include, path
 
 from .routers import get_users_routes
-from .views import sign_up_send_code, authenticate_send_JWT_access
+from .views import authenticate_send_JWT_access, sign_up_send_code
 
 app_name = "users"
 

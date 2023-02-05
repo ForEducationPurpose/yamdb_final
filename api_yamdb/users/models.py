@@ -1,11 +1,10 @@
 from typing import Dict
 
-from django.db import models
-from django.core.validators import EmailValidator
+from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.hashers import make_password, check_password
+from django.core.validators import EmailValidator
+from django.db import models
 from django.utils.crypto import get_random_string
-
 from rest_framework_simplejwt.tokens import AccessToken
 
 from api_yamdb.settings import LENGTH
@@ -29,12 +28,9 @@ class User(AbstractUser):
         max_length=Role.max_str_length(),
         choices=Role.create_tuple_all_roles(),
         default=Role.USER.value,
-        verbose_name="Статус"
+        verbose_name="Статус",
     )
-    email = models.EmailField(
-        blank=False, unique=True,
-        verbose_name="Почта"
-    )
+    email = models.EmailField(blank=False, unique=True, verbose_name="Почта")
     confirmation_code = models.CharField(max_length=120)
 
     def __str__(self):
@@ -71,7 +67,7 @@ class User(AbstractUser):
     def check_confirmation_code(
         self, confirmation_code, hashed_confirmation_code
     ) -> bool:
-        """"Сравнивает переданную строку с переданным хэшем
+        """ "Сравнивает переданную строку с переданным хэшем
         с помощью джанго функции `check_password`. Возвращает `bool`.
         """
         return check_password(confirmation_code, hashed_confirmation_code)
@@ -79,9 +75,7 @@ class User(AbstractUser):
     def get_access_token_for_user(self) -> Dict[str, str]:
         """Создает access JWT токен с использованием библиотеки `SimpleJWT`."""
         access = AccessToken.for_user(self)
-        return {
-            "token": str(access)
-        }
+        return {"token": str(access)}
 
     class Meta:
         verbose_name = "Пользователь"
@@ -89,6 +83,6 @@ class User(AbstractUser):
         #  Если юзернейм будет "me" в базу не запишется
         constraints = (
             models.constraints.CheckConstraint(
-                check=~models.Q(username="me"),
-                name="Username_is_not_me"),
+                check=~models.Q(username="me"), name="Username_is_not_me"
+            ),
         )

@@ -8,6 +8,7 @@ class Role(str, enum.Enum):
     для представления атрибута как str.
     P.S. Как я хотел сработал не совсем.....но наследование от str я оставил.
     """
+
     ADMIN = "admin"
     MODERATOR = "moderator"
     USER = "user"

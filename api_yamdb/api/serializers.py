@@ -1,21 +1,17 @@
-from rest_framework import serializers
-from django.core.validators import (
-    MaxValueValidator, MinValueValidator
-)
 from datetime import datetime
 
-from reviews.models import Category, Title, Genre, Comment, Review
+from django.core.validators import MaxValueValidator, MinValueValidator
+from rest_framework import serializers
+from reviews.models import Category, Comment, Genre, Review, Title
 
 
 class CategorySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Category
         fields = ("slug", "name")
 
 
 class GenreSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Genre
         fields = ("slug", "name")
@@ -35,8 +31,7 @@ class TitleDetailSerializer(serializers.ModelSerializer):
 
 class TitlePostSerializer(serializers.ModelSerializer):
     category = serializers.SlugRelatedField(
-        queryset=Category.objects.all(),
-        slug_field="slug"
+        queryset=Category.objects.all(), slug_field="slug"
     )
     genre = serializers.SlugRelatedField(
         queryset=Genre.objects.all(),
@@ -46,7 +41,7 @@ class TitlePostSerializer(serializers.ModelSerializer):
     year = serializers.IntegerField(
         validators=[
             MinValueValidator(0),
-            MaxValueValidator(int(datetime.now().year))
+            MaxValueValidator(int(datetime.now().year)),
         ],
     )
 
@@ -57,19 +52,20 @@ class TitlePostSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
-        slug_field="username",
-        read_only=True
+        slug_field="username", read_only=True
     )
 
     def create(self, validated_data):
         if Review.objects.filter(
             author=self.context["request"].user,
-            title=validated_data.get("title")
+            title=validated_data.get("title"),
         ).exists():
             raise serializers.ValidationError(
                 "Нельзя оставить больше одного обзора."
             )
-        return Review.objects.create(**validated_data,)
+        return Review.objects.create(
+            **validated_data,
+        )
 
     class Meta:
         model = Review
@@ -78,8 +74,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
-        slug_field="username",
-        read_only=True
+        slug_field="username", read_only=True
     )
 
     class Meta:
