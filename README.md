@@ -23,12 +23,12 @@ API предоставляет возможность взаимодейство
 
 Перед запуском необходимо склонировать проект:
 ```bash
-HTTPS: git clone https://github.com/ForEducationPurpose/infra_sp2.git
-SSH: git@github.com:ForEducationPurpose/infra_sp2.git
+HTTPS: git clone https://github.com/ForEducationPurpose/yamdb_final.git
+SSH: git@github.com:ForEducationPurpose/yamdb_final.git
 ```
 Убедитесь, что на компьюетере установлен [Docker](https://docs.docker.com/desktop/install/linux-install/ "ссылка на гайд для Linux" ) и [Docker-compose](https://docs.docker.com/compose/install/ "на docker-compose")
 
-Перед запуском сделайте файл .env и поместите его в папку infra, шаблон заполнения посмотрите в [.env.template](https://github.com/ForEducationPurpose/infra_sp2/blob/master/infra/.env.template "шаблон")
+Перед запуском сделайте файл .env и поместите его в папку infra, шаблон заполнения посмотрите в [.env.template](https://github.com/ForEducationPurpose/yamdb_final/blob/master/infra/.env.template "шаблон")
 
 После клонирования проекта откройте терминал и перейдите в папку, где лежит файл docker-compose.yaml
 
