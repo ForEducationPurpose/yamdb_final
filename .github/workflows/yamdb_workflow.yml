@@ -70,8 +70,8 @@ jobs:
           echo DB_PORT=${{ secrets.DB_PORT }} >> .env
           echo DEBUG=${{ secrets.DEBUG }} >> .env
           echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-          echo LENGTH= ${{ secrets.LENGTH }} >> .env
-          echo EMAIL_HOST= ${{ secrets.EMAIL_HOST }} >> .env
+          echo LENGTH=${{ secrets.LENGTH }} >> .env
+          echo EMAIL_HOST=${{ secrets.EMAIL_HOST }} >> .env
           sudo docker-compose up -d
           sudo docker-compose exec -T web python manage.py migrate
           # Im not sure how to createsuperuser?
