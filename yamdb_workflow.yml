@@ -81,7 +81,7 @@ jobs:
           sudo docker-compose exec -T web python manage.py migrate
           # In 3.0 its almost built in behavior, but 2.2 doesn't allow to --password,
           # so i took extended createsuperuser2.py.
-          sudo docker-compose exec web python manage.py createsuperuser2 \
+          sudo docker-compose exec -T web python manage.py createsuperuser2 \
             --username ${{ secrets.ADMIN }} --password ${{ secrets.ADMIN_PASSWORD }} \
             --email ${{ secrets.ADMIN_EMAIL }} --no-input
           sudo docker-compose exec -T web python manage.py collectstatic --no-input
