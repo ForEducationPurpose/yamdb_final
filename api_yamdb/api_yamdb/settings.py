@@ -6,7 +6,7 @@ from decouple import AutoConfig, config
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_CONFIG = AutoConfig(search_path="/infra/")
+SECRET_CONFIG = AutoConfig(search_path="/infra/.env")
 # Fixed!
 SECRET_KEY = SECRET_CONFIG("SECRET_KEY")
 
