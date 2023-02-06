@@ -1,13 +1,14 @@
 import os
 from datetime import timedelta
 
-from decouple import config
+from decouple import AutoConfig, config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+SECRET_CONFIG = AutoConfig(search_path="/infra/")
 # Fixed!
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = SECRET_CONFIG("SECRET_KEY")
 
 # SECURITY WARNING: don"t run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
