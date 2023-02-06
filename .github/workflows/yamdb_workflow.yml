@@ -1,5 +1,6 @@
 name: Yamdb_workflow
 
+# Fixed to push only on master branch. Tests allow like this.
 on:
   push:
     branches:
@@ -21,6 +22,8 @@ jobs:
         pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
         pip install -r api_yamdb/requirements.txt
     - name: Test with flake 8 and pytest
+      # I had to make .env file with SECRET_KEY in tests so decouple
+      # can find SECRET_KEY without default value
       run: |
         touch .env
         echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
@@ -76,7 +79,9 @@ jobs:
           echo EMAIL_HOST=${{ secrets.EMAIL_HOST }} >> .env
           sudo docker-compose up -d
           sudo docker-compose exec -T web python manage.py migrate
-          sudo docker-compose exec  web python manage.py createsuperuser2
+          # In 3.0 its almost built in behavior, but 2.2 doesn't allow to --password,
+          # so i took extended createsuperuser2.py.
+          sudo docker-compose exec  web python manage.py createsuperuser2 |
             --username ${{ secrets.ADMIN }} --password ${{ secrets.ADMIN_PASSWORD }}
             --email ${{ secrets.ADMIN_EMAIL }} --no-input
           sudo docker-compose exec -T web python manage.py collectstatic --no-input
