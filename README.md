@@ -14,9 +14,11 @@ API предоставляет возможность взаимодейство
   - просматривать комментарии к своему и другим отзывам
   - просматривать произведения, категории и жанры произведений
 
-Проект доступен по адресу  51.250.110.142 или learnproject.ddns.net и поделен на 3 контейнера, контейнер приложения web,
+работающий проект доступен по адресу  51.250.110.142  и поделен на 3 контейнера, контейнер приложения web,
 контейнер базы db, работающий на порту 5432, контейнер с сервером nginx, использующийся как прокси и передающий с 80 порта на 80 порт приложения.
 Данные работы контейнеров сохраняются на тома values.
+
+
 
 ---
 ## 2. Команды для запуска
@@ -47,12 +49,147 @@ SSH: git@github.com:ForEducationPurpose/yamdb_final.git
 ```
 
 ---
-## 3. Техническая информация
+## 3. Структура проекта
+
+Список эндпоинтов:
+```
+/api/v1/auth/signup/
+/api/v1/auth/token/
+/api/v1/categories/
+/api/v1/categories/{slug}/
+/api/v1/genres/
+/api/v1/genres/{slug}/
+/api/v1//titles/
+/api/v1/titles/{titles_id}/
+/api/v1/{title_id}/reviews/
+/api/v1/titles/{title_id}/reviews/{review_id}/
+/api/v1/titles/{title_id}/reviews/{review_id}/comments/
+/api/v1/titles/{title_id}/reviews/{review_id}/comments/{comment_id}/
+/api/v1/users/
+/api/v1/users/{username}/
+/api/v1/users/me/
+```
+---
+## 4. Примеры запросов
+Все пути начинаются с ваш_хост/api/v1/...
+Регистрация нового пользователя
+Уровень доступа: без токена
+POST auth/signup
+```
+{
+  "email": "string",
+  "username": "string"
+}
+```
+Получение JWT-токена
+Уровень доступа: без токена
+POST auth/token
+```
+{
+  "username": "string",
+  "confirmation_code": "string"
+}
+```
+Получение списка всех категорий
+Уровень доступа: без токена
+GET /categories/ 
+```
+[
+  {
+    "count": 0,
+    "next": "string",
+    "previous": "string",
+    "results": [
+      {
+        "name": "string",
+        "slug": "string"
+      }
+    ]
+  }
+]
+```
+Добавление новой категории
+Уровень доступа: админ
+POST /categories/
+```
+{
+  "name": "string",
+  "slug": "string"
+}
+```
+Получение списка всех произведений
+Уровень доступа: без токена
+GET /titles/ 
+```
+[
+  {
+    "count": 0,
+    "next": "string",
+    "previous": "string",
+    "results": [
+      {
+        "id": 0,
+        "name": "string",
+        "year": 0,
+        "rating": 0,
+        "description": "string",
+        "genre": [
+          {
+            "name": "string",
+            "slug": "string"
+          }
+        ],
+        "category": {
+          "name": "string",
+          "slug": "string"
+        }
+      }
+    ]
+  }
+]
+```
+Добавление произведения
+Права доступа: Администратор.
+POST /titles/
+Пример запроса
+```
+{
+  "name": "string",
+  "year": 0,
+  "description": "string",
+  "genre": [
+    "string"
+  ],
+  "category": "string"
+}
+```
+Пример ответа
+```
+{
+  "id": 0,
+  "name": "string",
+  "year": 0,
+  "rating": 0,
+  "description": "string",
+  "genre": [
+    {
+      "name": "string",
+      "slug": "string"
+    }
+  ],
+  "category": {
+    "name": "string",
+    "slug": "string"
+  }
+}
+```
+---
+## 5. Техническая информация
 
 Стек технологий: Python 3, Django, Django Rest, Docker, PostgreSQL, Nginx.
 
 ---
-## 4. Об авторах 
+## 6. Об авторах 
 Лобанов Максим
 
 Никитина Вероника 
